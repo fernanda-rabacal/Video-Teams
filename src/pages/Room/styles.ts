@@ -87,3 +87,47 @@ export const CommentsArea = styled.aside`
     }
   }
 `
+export const CommentsSection = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  gap: 1rem;
+  padding-inline: 1rem;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: pop .25s ease;
+    
+    span {
+      padding: 1rem;
+      border-radius: 5px;
+      background-color: ${({theme}) => theme["gray-500"]};
+      box-shadow: 0 3px 6px rgba(0,0,0,.10);
+      color: ${({theme}) => theme.white};
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0)
+      }
+
+      to {
+        transform: scale(1);
+      }
+    }
+
+    &.outgoing {
+      flex-direction: row-reverse;
+    }
+    
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
+    }
+  }
+`

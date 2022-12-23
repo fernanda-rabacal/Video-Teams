@@ -1,7 +1,19 @@
 import styled from "styled-components";
 
 export const HomeContainer = styled.div`
-  
+  > button {
+    margin-top: 2rem;
+    margin-inline: auto;
+    width: fit-content;
+    background: ${({theme}) => theme["red-500"]};
+    color: ${({theme}) => theme.white};
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 5px;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+  }
 `
 
 export const CreateRoomForm = styled.form`

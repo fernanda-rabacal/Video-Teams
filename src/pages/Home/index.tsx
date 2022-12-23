@@ -1,11 +1,17 @@
 import { useForm } from "react-hook-form"
-import { useRoom } from "../../hooks/useRoom"
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod"
 import { CreateRoomForm, HomeContainer } from "./styles";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import {useAuthState} from "react-firebase-hooks/auth"
+import { auth, db } from "../../services/service";
+import { useEffect, useState } from "react";
+import { Login } from "../../components/Login";
+import { format } from "date-fns";
+import { FilmStrip } from "phosphor-react";
+import { LogOutButton } from "../../components/Logout";
 
 const RoomSchema = zod.object({
   roomName: zod.string().min(1, "O nome é obrigatório"),
@@ -15,10 +21,12 @@ const RoomSchema = zod.object({
 type RoomValidationData = zod.infer<typeof RoomSchema>
 
 export function Home(){
+  const [ user, loading ] = useAuthState(auth as any);
+  const [id, setId] = useState('')
+
   const { register, handleSubmit } = useForm<RoomValidationData>({
     resolver: zodResolver(RoomSchema)
   })
-  const { createNewRoom } = useRoom()
   const navigate = useNavigate()
 
   const toastProps = {
@@ -39,19 +47,55 @@ export function Home(){
   function createRoom(data: RoomValidationData) {
     if(!isYoutubeVideo(data.videolink)) {
       toast.error("Link inválido", toastProps);
-      console.log("bad choice")
       return;
     }
 
-    const newRoom = createNewRoom(data.roomName, data.videolink)
+    db.collection("rooms").add({
+      user: {
+        uid: user?.uid,
+        email: user?.email,
+        photoURL: user?.photoURL,
+        displayName: user?.displayName
+      },
+      name: data.roomName,
+      link: "http://127.0.0.1/5173",
+      videolink: data.videolink,
+      comments: [],
+      createdAt: format(new Date(), "dd/MM/yyyy"),
+    }).then(doc => {
+      
+      setId(doc.id)
+    })
     
-    navigate(`/rooms/${newRoom.id}`)
+    navigate(`/rooms/${id}`)
   }
+
+  function handleNavigateToRoomsList() {
+    navigate("/rooms")
+  }
+
+  useEffect(() => {
+    if(user) {
+      db.collection("users").doc(user!.uid).set({
+        email: user?.email,
+        photoURL: user?.photoURL,
+        displayName: user?.displayName
+      })
+    }
+  }, [user])
+
+  if(!user) return <Login />
 
   return(
     <HomeContainer>
       <ToastContainer />
+      <LogOutButton />
       <h1>Crie a sua sala virtual e veja vídeos junto com seus amigos!</h1>
+
+      <button onClick={handleNavigateToRoomsList}>
+          Salas Disponíveis
+          <FilmStrip size={20} weight="bold"/>
+        </button>
 
       <CreateRoomForm onSubmit={handleSubmit(createRoom)}>
         <div className="input-container">
