@@ -12,6 +12,8 @@ import { format } from "date-fns";
 import { FilmStrip } from "phosphor-react";
 import { LogOutButton } from "../../components/Logout";
 import { LoginButton } from "../../components/LoginBtn";
+import { isYoutubeVideo } from "../../utils/isYoutubeVideo";
+import { toastProps } from "../../utils/toastProps";
 
 const RoomSchema = zod.object({
   roomName: zod.string().min(1, "O nome é obrigatório"),
@@ -20,7 +22,7 @@ const RoomSchema = zod.object({
 
 type RoomValidationData = zod.infer<typeof RoomSchema>
 
-export function Home(){
+export function Home() {
   const [user] = useAuthState(auth as any);
   const [roomId, setRoomId] = useState('')
 
@@ -29,21 +31,6 @@ export function Home(){
   })
   const navigate = useNavigate()
 
-  const toastProps = {
-    position: toast.POSITION.TOP_RIGHT,
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined
-    };
-
-  function isYoutubeVideo(url: string) {
-    const validationRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-    return (url.match(validationRegex)) ? true : false;
-  }
-
   async function createRoom(data: RoomValidationData) {
     if(!isYoutubeVideo(data.videolink)) {
       toast.error("Link inválido", toastProps);
@@ -51,6 +38,16 @@ export function Home(){
     }
 
     if(!user) {
+      await db.collection("rooms").add({
+        user: {},
+        name: data.roomName,
+        videolink: data.videolink,
+        comments: [],
+        createdAt: format(new Date(), "dd/MM/yyyy"),
+      }).then(doc => {
+        
+        navigate(`/rooms/${doc.id}`)
+      })
       toast.error("Você precisa fazer login", toastProps)
       return;
     }

@@ -8,7 +8,7 @@ export function LogOutButton() {
   function handleLogout() {
     auth.signOut()
 
-    navigate("/login")
+    navigate("/")
   }
   
   return(

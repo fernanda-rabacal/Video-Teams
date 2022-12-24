@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form"
 type CommentData = {
   commentMessage: string
 }
-
 interface CommentProps {
   user: string,
   photo: string,
@@ -22,7 +21,6 @@ export function RoomPage() {
   const [ user ] = useAuthState(auth as any);
   const [room, setRoom] = useState<any>({})
   const { register, handleSubmit, reset } = useForm<CommentData>()
-
   
   async function getRoom() {
     return await db.collection("rooms")
