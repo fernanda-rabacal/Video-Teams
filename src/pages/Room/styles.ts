@@ -35,11 +35,11 @@ export const CommentsArea = styled.aside`
     
     .name-and-link {
       flex-direction: column;
+      align-items: flex-start;
       gap: 1rem;
       border-bottom: 1px solid ${({theme}) => theme["gray-600"]};
       color: ${({theme}) => theme["red-500"]};
       font-size: 2rem;
-      font-weight: 700;
     }
   }
 
@@ -84,6 +84,59 @@ export const CommentsArea = styled.aside`
 
     input {
       width: 90%;
+    }
+  }
+
+  .login {
+    margin-bottom: 2rem;
+    color: ${({theme}) => theme["gray-300"]};
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`
+export const CommentsSection = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  gap: 1rem;
+  padding-inline: 1rem;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: pop .25s ease;
+    
+    span {
+      padding: 1rem;
+      border-radius: 5px;
+      background-color: ${({theme}) => theme["gray-500"]};
+      box-shadow: 0 3px 6px rgba(0,0,0,.10);
+      color: ${({theme}) => theme.white};
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0)
+      }
+
+      to {
+        transform: scale(1);
+      }
+    }
+
+    &.outgoing {
+      flex-direction: row-reverse;
+    }
+    
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
     }
   }
 `

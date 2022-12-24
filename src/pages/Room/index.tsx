@@ -1,29 +1,72 @@
-import { CommentsArea, RoomContainer } from "./styles";
-import { useNavigate, useParams } from "react-router-dom"
-import { useRoom } from "../../hooks/useRoom";
+import { CommentsArea, CommentsSection, RoomContainer } from "./styles";
+import { useParams } from "react-router-dom"
 import ReactPlayer from 'react-player/youtube'
 import { User, CaretLeft, Plus, Eye } from "phosphor-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { auth, db } from "../../services/service";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useForm } from "react-hook-form"
+import { Login } from "../Login";
+
+type CommentData = {
+  commentMessage: string
+}
+
+interface CommentProps {
+  user: string,
+  photo: string,
+  content: string
+}
 
 export function RoomPage() {
   const { id } = useParams()
-  const { rooms, updateRoomVisualization } = useRoom()
+  const [ user ] = useAuthState(auth as any);
+  const [room, setRoom] = useState<any>({})
+  const { register, handleSubmit, reset } = useForm<CommentData>()
 
-  const room = rooms.find(room => {
-    return room.id === id
-  })
+  
+  async function getRoom() {
+    return await db.collection("rooms")
+    .doc(id)
+    .get()
+    .then(doc => {
+      const room = {
+        ...doc.data(),
+        id: doc.id
+      }
+      setRoom(room)
+    })
+  }
+  
+  function observer() {
+    db.collection("rooms").doc(id).onSnapshot(async (docSnap) => {
+      getRoom()
+  })}
 
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if(!room) {
-      navigate('/')
+  function handleSendMessage(data: CommentData) {
+    if(data.commentMessage === '') {
+      return
     }
 
-    updateRoomVisualization(room!)
-  },[])
+    const newComment = {
+      user: user?.uid,
+      photo: user?.photoURL,
+      content: data.commentMessage
+    }
 
-  if(!room) return <></>;
+    db.collection("rooms")
+      .doc(id)
+      .update({
+        comments: [...room.comments, newComment]
+      })
+
+      reset()
+    }
+    
+    useEffect(() => {
+      getRoom()
+      observer()
+    },[room])
 
   return(
     <RoomContainer>
@@ -40,23 +83,43 @@ export function RoomPage() {
       <CommentsArea>
         <header>
           <div>
-            <a className="cards" href={"/rooms"}> <CaretLeft weight="bold" />  Sair</a>
+            <a className="cards" href={"/rooms"}> <CaretLeft weight="bold" />Sair</a>
             <a className="cards" href={"/"}>Nova sala <Plus weight="bold" /></a>
             <p className="cards"><Eye weight="bold" /> {room.visualization}</p>
           </div>
           <div className="name-and-link">
-            <p>{room.name}</p>
-            <p>Link da sala: {room.link}</p>
+            <p><strong>{room.name}</strong></p>
+            <p><strong>Link id da sala: </strong>{room.id}</p>
           </div>
           <div className="watching">
             <User weight="bold" />
             1
           </div>
         </header>
-        <div className="comment-input">
-          <input placeholder="Digite um comentário..."/>
-          <button><Plus weight="bold" /></button>
-        </div>
+        <CommentsSection>
+          {room.comments?.map((comment: CommentProps) => {
+            const commentClass = comment.user === user?.uid
+              ? 'outgoing'
+              : 'incoming'
+
+            return(
+              <div className={commentClass} key={comment.content}>
+                <img src={comment.photo} />
+                <span>{comment.content}</span>
+              </div>
+            )
+          })}
+        </CommentsSection>
+        { user ?
+          <form className="comment-input" onSubmit={handleSubmit(handleSendMessage)}>
+            <input placeholder="Digite um comentário..." {...register("commentMessage")}/>
+            <button><Plus weight="bold" /></button>
+          </form>
+        :
+        <a className="login" href="/login">
+          Entre para comentar
+        </a>
+        }
       </CommentsArea>
     </RoomContainer>
   )

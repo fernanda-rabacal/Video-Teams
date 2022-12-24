@@ -6,9 +6,17 @@ export const RoomsListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 3rem;
+
+  .no-data {
+    text-align: center;
+    padding: 3rem;
+    color: ${({theme}) => theme.white};
+    font-size: 2.5rem;
+    background: ${({theme}) => theme["gray-600"]};
+  }
   
   > div {
-    width: min(100rem, 100%);
+    width: min(120rem, 100%);
 
     button {
       width: fit-content;
@@ -62,6 +70,12 @@ export const RoomsListTable = styled.table`
     background: ${({theme}) => theme["gray-900"]};
   }
 
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
   button {
     background: ${({theme}) => theme["red-500"]};
     color: ${({theme}) => theme.white};
@@ -73,9 +87,4 @@ export const RoomsListTable = styled.table`
     padding: 0.5rem;
   }
 
-  p {
-    text-align: center;
-    color: ${({theme}) => theme.white};
-    font-size: 2.5rem;
-  }
 `
