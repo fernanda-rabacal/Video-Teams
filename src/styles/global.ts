@@ -20,7 +20,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    box-sizing: border-box;
+  box-sizing: border-box;
   text-align: center;
   
   &:before {

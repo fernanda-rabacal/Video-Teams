@@ -4,6 +4,22 @@ export const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
+  text-align: center;
+  
+  &:before {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+
+    display: block;
+    background-image: url("/src/assets/background.jpg");
+    filter: blur(3px) brightness(30%);
+  }
 
   .rooms, .enter-room-id {
     margin-top: 2rem;
