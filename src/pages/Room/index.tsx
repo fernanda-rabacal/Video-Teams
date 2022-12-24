@@ -1,12 +1,11 @@
 import { CommentsArea, CommentsSection, RoomContainer } from "./styles";
-import { useParams } from "react-router-dom"
+import { useParams, NavLink } from "react-router-dom"
 import ReactPlayer from 'react-player/youtube'
 import { User, CaretLeft, Plus, Eye } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { auth, db } from "../../services/service";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form"
-import { Login } from "../Login";
 
 type CommentData = {
   commentMessage: string
@@ -83,8 +82,8 @@ export function RoomPage() {
       <CommentsArea>
         <header>
           <div>
-            <a className="cards" href={"/rooms"}> <CaretLeft weight="bold" />Sair</a>
-            <a className="cards" href={"/"}>Nova sala <Plus weight="bold" /></a>
+            <NavLink className="cards" to="/rooms"> <CaretLeft weight="bold" />Sair</NavLink>
+            <NavLink className="cards" to="/">Nova sala <Plus weight="bold" /></NavLink>
             <p className="cards"><Eye weight="bold" /> {room.visualization}</p>
           </div>
           <div className="name-and-link">
@@ -116,9 +115,9 @@ export function RoomPage() {
             <button><Plus weight="bold" /></button>
           </form>
         :
-        <a className="login" href="/login">
+        <NavLink className="login" to="/login">
           Entre para comentar
-        </a>
+        </NavLink>
         }
       </CommentsArea>
     </RoomContainer>

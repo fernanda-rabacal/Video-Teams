@@ -48,6 +48,12 @@ export function RoomsList(){
     setLoading(false)
   }
 
+  function observer() {
+    db.collection("rooms").onSnapshot(async (docSnap) => {
+      getRooms()
+  })}
+
+
   function handleNavigateToHome() {
     navigate("/")
   }
@@ -58,10 +64,12 @@ export function RoomsList(){
 
   function handleDeleteRoom(roomId: string) {
     db.collection("rooms").doc(roomId).delete()
+    navigate("/rooms")
   }
 
   useEffect(() => {
     getRooms()
+    observer()
   }, [])
 
   return(

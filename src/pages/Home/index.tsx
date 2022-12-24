@@ -22,7 +22,6 @@ type RoomValidationData = zod.infer<typeof RoomSchema>
 
 export function Home(){
   const [user] = useAuthState(auth as any);
-  const [id, setId] = useState('')
   const [roomId, setRoomId] = useState('')
 
   const { register, handleSubmit } = useForm<RoomValidationData>({
@@ -45,13 +44,18 @@ export function Home(){
     return (url.match(validationRegex)) ? true : false;
   }
 
-  function createRoom(data: RoomValidationData) {
+  async function createRoom(data: RoomValidationData) {
     if(!isYoutubeVideo(data.videolink)) {
       toast.error("Link inválido", toastProps);
       return;
     }
 
-    db.collection("rooms").add({
+    if(!user) {
+      toast.error("Você precisa fazer login", toastProps)
+      return;
+    }
+
+    await db.collection("rooms").add({
       user: {
         uid: user?.uid,
         email: user?.email,
@@ -64,10 +68,9 @@ export function Home(){
       createdAt: format(new Date(), "dd/MM/yyyy"),
     }).then(doc => {
       
-      setId(doc.id)
+      navigate(`/rooms/${doc.id}`)
     })
-    
-    navigate(`/rooms/${id}`)
+
   }
 
   async function handleEnterRoom() {
