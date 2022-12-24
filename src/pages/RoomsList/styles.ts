@@ -16,7 +16,7 @@ export const RoomsListContainer = styled.div`
   }
   
   > div {
-    width: min(100rem, 100%);
+    width: min(120rem, 100%);
 
     button {
       width: fit-content;

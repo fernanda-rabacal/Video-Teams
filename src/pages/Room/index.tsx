@@ -6,10 +6,16 @@ import { useEffect, useState } from "react";
 import { auth, db } from "../../services/service";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form"
-import { Login } from "../../components/Login";
+import { Login } from "../Login";
 
 type CommentData = {
-  comment: string
+  commentMessage: string
+}
+
+interface CommentProps {
+  user: string,
+  photo: string,
+  content: string
 }
 
 export function RoomPage() {
@@ -24,7 +30,10 @@ export function RoomPage() {
     .doc(id)
     .get()
     .then(doc => {
-      const room = doc.data()
+      const room = {
+        ...doc.data(),
+        id: doc.id
+      }
       setRoom(room)
     })
   }
@@ -35,14 +44,20 @@ export function RoomPage() {
   })}
 
   function handleSendMessage(data: CommentData) {
-    if(data.comment === '') {
+    if(data.commentMessage === '') {
       return
+    }
+
+    const newComment = {
+      user: user?.uid,
+      photo: user?.photoURL,
+      content: data.commentMessage
     }
 
     db.collection("rooms")
       .doc(id)
       .update({
-        comments: [...room.comments, data.comment]
+        comments: [...room.comments, newComment]
       })
 
       reset()
@@ -52,8 +67,6 @@ export function RoomPage() {
       getRoom()
       observer()
     },[room])
-
-  if(!user) return <Login />
 
   return(
     <RoomContainer>
@@ -75,8 +88,8 @@ export function RoomPage() {
             <p className="cards"><Eye weight="bold" /> {room.visualization}</p>
           </div>
           <div className="name-and-link">
-            <p>{room.name}</p>
-            <p>Link da sala: {room.link}</p>
+            <p><strong>{room.name}</strong></p>
+            <p><strong>Link id da sala: </strong>{room.id}</p>
           </div>
           <div className="watching">
             <User weight="bold" />
@@ -84,23 +97,29 @@ export function RoomPage() {
           </div>
         </header>
         <CommentsSection>
-          {room.comments?.map((comment: string) => {
-            const commentClass = room.user.uid === user?.uid
+          {room.comments?.map((comment: CommentProps) => {
+            const commentClass = comment.user === user?.uid
               ? 'outgoing'
               : 'incoming'
 
             return(
-              <div className={commentClass} key={comment}>
-                <img src={room.user.photoURL} />
-                <span>{comment}</span>
+              <div className={commentClass} key={comment.content}>
+                <img src={comment.photo} />
+                <span>{comment.content}</span>
               </div>
             )
           })}
         </CommentsSection>
-        <form className="comment-input" onSubmit={handleSubmit(handleSendMessage)}>
-          <input placeholder="Digite um comentário..." {...register("comment")}/>
-          <button ><Plus weight="bold" /></button>
-        </form>
+        { user ?
+          <form className="comment-input" onSubmit={handleSubmit(handleSendMessage)}>
+            <input placeholder="Digite um comentário..." {...register("commentMessage")}/>
+            <button><Plus weight="bold" /></button>
+          </form>
+        :
+        <a className="login" href="/login">
+          Entre para comentar
+        </a>
+        }
       </CommentsArea>
     </RoomContainer>
   )

@@ -42,7 +42,7 @@ export const GlobalStyle = createGlobalStyle`
   h1 {
     color: ${({theme}) => theme.white};
     font-size: 4rem;
-    padding-top: 4rem;
+    padding-top: 6rem;
   }
   
   body, input, textarea, button, select {

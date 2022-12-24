@@ -23,6 +23,7 @@
     "react-iframe": "^1.8.5",
     "react-player": "^2.11.0",
     "react-router-dom": "^6.6.0",
+    "react-spinners": "^0.13.7",
     "react-toastify": "^9.1.1",
     "styled-components": "^5.3.6",
     "zod": "^3.20.2"

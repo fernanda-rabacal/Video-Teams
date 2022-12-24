@@ -35,11 +35,11 @@ export const CommentsArea = styled.aside`
     
     .name-and-link {
       flex-direction: column;
+      align-items: flex-start;
       gap: 1rem;
       border-bottom: 1px solid ${({theme}) => theme["gray-600"]};
       color: ${({theme}) => theme["red-500"]};
       font-size: 2rem;
-      font-weight: 700;
     }
   }
 
@@ -84,6 +84,15 @@ export const CommentsArea = styled.aside`
 
     input {
       width: 90%;
+    }
+  }
+
+  .login {
+    margin-bottom: 2rem;
+    color: ${({theme}) => theme["gray-300"]};
+    
+    &:hover {
+      text-decoration: underline;
     }
   }
 `

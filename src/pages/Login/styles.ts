@@ -4,6 +4,7 @@ export const LoginContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 2rem;
   width: 100%;
   height: 100vh;
 
@@ -17,5 +18,10 @@ export const LoginContainer = styled.div`
     padding: 2rem;
     margin-bottom: 1rem;
     font-size: 2.5rem;
+    transition: 0.4s;
+
+    &:hover {
+      background: ${({theme}) => theme["red-700"]};
+    }
   }
 `

@@ -2,18 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../services/service";
 import { ButtonContainer } from "./styles";
 
-export function LogOutButton() {
+export function LoginButton() {
  const navigate = useNavigate()
-
-  function handleLogout() {
-    auth.signOut()
-
-    navigate("/login")
-  }
-  
   return(
-    <ButtonContainer onClick={handleLogout}>
-      Deslogar
+    <ButtonContainer onClick={() =>navigate("/login")}>
+      Logar
     </ButtonContainer>
   )
 }
