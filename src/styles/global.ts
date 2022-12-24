@@ -33,7 +33,7 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
 
     display: block;
-    background-image: url("/src/assets/background.jpg");
+    background-image: url("/background.jpg");
     filter: blur(3px) brightness(30%);
   }
 
