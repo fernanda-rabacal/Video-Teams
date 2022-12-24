@@ -29,6 +29,7 @@ export const HomeContainer = styled.div`
     width: 50%;
     display: flex;
     justify-content: space-between;
+    margin-top: 3rem;
     
     > div {
       display: flex;
@@ -36,19 +37,19 @@ export const HomeContainer = styled.div`
       gap: 1rem;
 
       input {
-      color: ${({theme}) => theme["gray-900"]};
-      border: 2px solid transparent;
-      border-radius: 3px;
-      height: 4rem;
-      margin-bottom: 1.4rem;
+        color: ${({theme}) => theme["gray-900"]};
+        border: 2px solid transparent;
+        border-radius: 3px;
+        height: 4rem;
+        margin-bottom: 1.4rem;
 
-      &:focus {
-        outline: 0;
-        border-color: ${({theme}) => theme["red-500"]};
+        &:focus {
+          outline: 0;
+          border-color: ${({theme}) => theme["red-500"]};
+        }
       }
     }
   }
-}
 `
 
 export const CreateRoomForm = styled.form`
