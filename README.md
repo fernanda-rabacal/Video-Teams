@@ -1,11 +1,12 @@
 # Video-Teams
 
-Este projeto simula um site para visualização de videos em salas virtuais para convidados e conta com quatro paginas. Feito com Reactjs e Firebase, 
+Este projeto simula um site para visualização de videos em salas virtuais para convidados e conta com quatro paginas. Feito com Reactjs e Firebase. 
+OBs: As vezes, ao entrar na sala, o video não é carregado por problemas de acesso ao youtube, custando apenas dar um refresh ou ir par outra tela e voltar.
+
 - A página de login permite o login com o Github e com o Google. 
-- A página de criação da sala só permite link de vídeos do Youtube e mostrará uma mensagem de erro caso o link seja inválido. Também não permite criar a sala sem nome. Se você possuir o id link do video (que fica no canto superior direito da sala virtual), poderá entrar diretamente na sala. 
+- A página de criação da sala só permite link de vídeos do Youtube e mostrará uma mensagem de erro caso o link seja inválido. Também não permite criar a sala sem nome, porém não precisa estar logado para criar. Se você possuir o id link do video (que fica no canto superior direito da sala virtual), poderá entrar diretamente na sala. 
 - A sala virtual roda automáticamente o video (tem que ligar o som do video pois os navegadores não permitem mais autoplay com o som ligado) e quem estiver logado pode fazer comentários que ficam salvos mesmo depois de sair da tela. Senão, aparece uma opção de logar para comentar. O link da sala virtual é o link utilizado para poder entrar diretamente. Os botões de usuarios assistindo e visualizações são decorativos, para adicionar funcionalidades depois.
-- A sala de listagem de salas virtuais mostra todas as salas disponiveis para acesso, que também ficam salvas mesmo após sair. Já existe uma sala criada para teste.
-Quem criar a sala tem a opção de poder apagar a sala.
+- A sala de listagem de salas virtuais mostra todas as salas disponiveis para acesso, que também ficam salvas mesmo após sair. Já existe uma sala criada para teste. Quem criar a sala tem a opção de poder apagar a sala.
 
 
 ## Para rodar o projeto na sua máquina
