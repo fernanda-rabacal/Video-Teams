@@ -108,10 +108,10 @@ export const CommentsSection = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
-    flex-wrap: wrap;
     animation: pop .25s ease;
     
     span {
+      text-align: left;
       padding: 1rem;
       border-radius: 5px;
       background-color: ${({theme}) => theme["gray-500"]};
@@ -131,6 +131,9 @@ export const CommentsSection = styled.div`
 
     &.outgoing {
       flex-direction: row-reverse;
+      span {
+        text-align: right;
+      }
     }
     
     img {
